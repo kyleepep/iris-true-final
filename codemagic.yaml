@@ -1,15 +1,21 @@
 workflows:
-  ios-build:
-    name: IRIS Build
+  iris-ios-build:
+    name: IRIS AI iOS Build
+    max_build_duration: 30
     environment:
       xcode: latest
+      vars:
+        BUNDLE_ID: "com.mall.iris"
+        APP_NAME: "IRIS"
     scripts:
-      - name: Build IRIS app
+      - name: Install dependencies
         script: |
-          xcodebuild -project IRIS.xcodeproj \
-            -scheme IRIS \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath $HOME/build/IRIS.xcarchive archive
+          echo "No dependencies to install"
+      - name: Build .ipa
+        script: |
+          xcodebuild clean -workspace IRIS.xcworkspace -scheme IRIS -sdk iphoneos -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          xcodebuild archive -workspace IRIS.xcworkspace -scheme IRIS -sdk iphoneos -archivePath $CM_BUILD_DIR/IRIS.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          xcodebuild -exportArchive -archivePath $CM_BUILD_DIR/IRIS.xcarchive -exportPath $CM_BUILD_DIR/export -exportOptionsPlist ExportOptions.plist
     artifacts:
-      - build/IRIS.xcarchive
+      - build/ios/ipa/*.ipa
+      - $CM_BUILD_DIR/export/*.ipa
