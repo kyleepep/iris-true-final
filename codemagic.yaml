@@ -1,1 +1,11 @@
-// Dummy content for codemagic.yaml
+workflows:
+  ios-build:
+    name: IRIS Build
+    environment:
+      xcode: latest
+    scripts:
+      - name: Build iOS app
+        script: |
+          xcodebuild -workspace IRIS.xcworkspace -scheme IRIS -configuration Release -sdk iphoneos -archivePath $HOME/build/IRIS.xcarchive archive
+    artifacts:
+      - build/IRIS.xcarchive
