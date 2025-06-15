@@ -4,8 +4,12 @@ workflows:
     environment:
       xcode: latest
     scripts:
-      - name: Build iOS app
+      - name: Build IRIS app
         script: |
-          xcodebuild -workspace IRIS.xcworkspace -scheme IRIS -configuration Release -sdk iphoneos -archivePath $HOME/build/IRIS.xcarchive archive
+          xcodebuild -project IRIS.xcodeproj \
+            -scheme IRIS \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath $HOME/build/IRIS.xcarchive archive
     artifacts:
       - build/IRIS.xcarchive
